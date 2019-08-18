@@ -1,17 +1,6 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net;
-using System.Threading;
+﻿using System.Net;
 using System.Windows.Forms;
-using TestTaskHHru.Parser;
-using TestTaskHHru.Parser.HeadHunter;
 
-/*
-TODO:
-1) убрать функции из БД и заменить на простые выражения SQL 
-2) заменить простой insert на массовый
-3) отметать вакансии без з/п на стадии парсинга
-*/
 namespace TestTaskHHru
 {
     class Program
@@ -21,10 +10,11 @@ namespace TestTaskHHru
             /* 
              * This program collects and sorts vacancy data from "hh.ru/catalog/Prodazhi":
              * 1. Parser collects strings with company name and salary;
-             * 2. Program divides collected strings into components: name, min-salary (if exists), max-salary. Strings without salary will be deleted;
+             * 2. Program divides collected strings into components: 
+             * name, title, description, min/max-salary (if exists) and publication date.
              * 3. Program calculates average salary from collected data;
-             * 4. If the salary does not differ by 10% from the average then it will be transfered into database;
-             * 5. Open a window and show collected data from database for user.
+             * 4. If vacancy's salary does not differ by 10% from the average then it will be transferred into database;
+             * 5. Load collected data from database and show it to user.
              */
             WebClient wc = new WebClient();
             Application.EnableVisualStyles();

@@ -40,7 +40,7 @@ namespace TestTaskHHru
             ListTitels.Items.Add("Parsing complete!");
             averageSalary = CalculateAverageSalary(vacancies);
             ListTitels.Items.Add("Average salary from collected data: " + averageSalary + " (" + averageSalary*0.9 + " - " + averageSalary*1.1 + ")");
-            ListTitels.Items.Add("Adding vacancies into Database...");
+            ListTitels.Items.Add("Adding vacancies into the Database...");
             foreach (Vacancy v in vacancies)
             {
                 if (!(v.VacansySalaryMin==0 && v.VacansySalaryMax==0))

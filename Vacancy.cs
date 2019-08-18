@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace TestTaskHHru
 {
@@ -19,10 +14,10 @@ namespace TestTaskHHru
 
         public Vacancy(string vacancyTitle, string vacancyName, string vacancyDescription, string vacancyPublicationDate, string vacancyPrice)
         {
-            this.VacancyTitle = vacancyTitle;
-            this.VacancyName = vacancyName;
-            this.VacancyDescription = vacancyDescription;
-            this.VacancyPublicationDate = vacancyPublicationDate;
+            VacancyTitle = vacancyTitle;
+            VacancyName = vacancyName;
+            VacancyDescription = vacancyDescription;
+            VacancyPublicationDate = vacancyPublicationDate;
             ProcessSalaryString(vacancyPrice);
         }
 
@@ -34,6 +29,7 @@ namespace TestTaskHHru
         range (10 000-12 000 руб.);*/
         private void ProcessSalaryString(string vacancyPrice)
         {
+            //empty
             Regex regex = new Regex(@"( руб.)");
             if (vacancyPrice != null)
             {
@@ -47,7 +43,7 @@ namespace TestTaskHHru
                     //Getting rid of " руб."
                     sortedString = regex.Replace(sortedString, "");
 
-                    // range 
+                    //range 
                     regex = new Regex(@"(?<min>\d*)(?:-)(?<max>\d*)");
                     matches = regex.Matches(sortedString);
                     if (regex.IsMatch(vacancyPrice))
@@ -58,28 +54,32 @@ namespace TestTaskHHru
                             VacansySalaryMax = Int32.Parse(match.Groups["max"].Value);
                         }
                     }
-
-                    //min
-                    regex  = new Regex(@"(?:от )(?<min>\d*)");
-                    matches = regex.Matches(sortedString);
-                    if (regex.IsMatch(vacancyPrice))
+                    else
                     {
-                        foreach (Match match in regex.Matches(sortedString))
+                        //min
+                        regex = new Regex(@"(?:от )(?<min>\d*)");
+                        matches = regex.Matches(sortedString);
+                        if (regex.IsMatch(vacancyPrice))
                         {
-                            VacansySalaryMin = Int32.Parse(match.Groups["min"].Value);
-                            VacansySalaryMax = 0;
+                            foreach (Match match in regex.Matches(sortedString))
+                            {
+                                VacansySalaryMin = Int32.Parse(match.Groups["min"].Value);
+                                VacansySalaryMax = 0;
+                            }
                         }
-                    }
-
-                    //max
-                    regex = new Regex(@"(?:до )(?<max1>\d*)");
-                    matches = regex.Matches(sortedString);
-                    if (regex.IsMatch(vacancyPrice))
-                    {
-                        foreach (Match match in regex.Matches(sortedString))
+                        else
                         {
-                            VacansySalaryMin = 0;
-                            VacansySalaryMax = Int32.Parse(match.Groups["max1"].Value);
+                            //max
+                            regex = new Regex(@"(?:до )(?<max1>\d*)");
+                            matches = regex.Matches(sortedString);
+                            if (regex.IsMatch(vacancyPrice))
+                            {
+                                foreach (Match match in regex.Matches(sortedString))
+                                {
+                                    VacansySalaryMin = 0;
+                                    VacansySalaryMax = Int32.Parse(match.Groups["max1"].Value);
+                                }
+                            }
                         }
                     }
                 }
