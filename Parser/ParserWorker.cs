@@ -11,7 +11,6 @@ namespace TestTaskHHru.Parser
         HtmlLoader loader;
 
         bool isActive;
-        T result1;
 
         #region Properties
 

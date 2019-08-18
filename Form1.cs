@@ -9,15 +9,16 @@ namespace TestTaskHHru
     public partial class Form1 : Form
     {
 
-        ParserWorker<Vacancy[]> parser;
-        List<Vacancy> Vacancies = new List<Vacancy>();
+        ParserWorker<List<Vacancy>> parser;
+        List<Vacancy> vacancies = new List<Vacancy>();
         DBWorker dataBase = new DBWorker();
+        int averageSalary;
 
         public Form1()
         {
             InitializeComponent();
 
-            parser = new ParserWorker<Vacancy[]>(
+            parser = new ParserWorker<List<Vacancy>>(
                 new HHParser()
                 );
 
@@ -25,22 +26,56 @@ namespace TestTaskHHru
             parser.OnNewData += Parser_OnNewData;
         }
 
-        private void Parser_OnNewData(object arg1, Vacancy[] arg2)
+        private void Parser_OnNewData(object arg1, List<Vacancy> arg2)
         {
             
             foreach (var item in arg2)
             {
-                dataBase.Insert(item);
-                //Console.WriteLine(item.getVacansyPriceMax() + " " + item.getVacansyPriceMin());
-                ListTitels.Items.Add(item.getVacancyTitle());
+                vacancies.Add(item);
+                //dataBase.Insert(item);
+                //ListTitels.Items.Add(item.VacancyTitle);
             }
+
         }
 
         private void Parser_OnCompleted(object obj)
         {
             //MessageBox.Show("All works done!");
+            averageSalary = CalculateAverageSalary(vacancies);
+            foreach (Vacancy v in vacancies)
+            {
+                if (!(v.VacansySalaryMin==0 && v.VacansySalaryMax==0))
+                {
+                    if (!(v.VacansySalaryMin == 0) && (v.VacansySalaryMax == 0))
+                    {
+                        if ((v.VacansySalaryMin < averageSalary * 1.1) && (v.VacansySalaryMin > averageSalary * 0.9))
+                        {
+                            dataBase.Insert(v);
+                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                    }
+                    else if ((v.VacansySalaryMin == 0) && !(v.VacansySalaryMax == 0))
+                    {
+                        if ((v.VacansySalaryMax < averageSalary * 1.1) && (v.VacansySalaryMax > averageSalary * 0.9))
+                        {
+                            dataBase.Insert(v);
+                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                    }
+                    else if (!(v.VacansySalaryMin == 0) && !(v.VacansySalaryMax == 0))
+                    {
+                        if (((v.VacansySalaryMax < averageSalary * 1.1) && (v.VacansySalaryMax > averageSalary * 0.9)) ||
+                            ((v.VacansySalaryMin < averageSalary * 1.1) && (v.VacansySalaryMin > averageSalary * 0.9)) ||
+                            ((v.VacansySalaryMin > averageSalary * 0.9) && (v.VacansySalaryMax < averageSalary * 1.1)) ||
+                            ((v.VacansySalaryMin < averageSalary * 0.9) && (v.VacansySalaryMax > averageSalary * 1.1)))
+                        {
+                            dataBase.Insert(v);
+                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                    }
+                }
+            }
             dgvData.DataSource = null;
-            
             dgvData.DataSource = dataBase.Select();
         }
 
@@ -48,13 +83,36 @@ namespace TestTaskHHru
         {
             parser.Settings = new HHSettings((int)NumberStart.Value, (int)NumberEnd.Value);
             parser.Start();
-
             dataBase.DeleteAll();
         }
 
         private void ButtonAbort_Click(object sender, EventArgs e)
         {
             parser.Abort();
+        }
+
+        private int CalculateAverageSalary(List<Vacancy> list)
+        {
+            int average = 0;
+            int count = 0;
+            foreach (Vacancy v in list)
+            {
+                if (v.VacansySalaryMin != 0)
+                {
+                    average += v.VacansySalaryMin;
+                    count++;
+                }
+                if (v.VacansySalaryMax != 0)
+                {
+                    average += v.VacansySalaryMax;
+                    count++;
+                }
+            }
+            average = average / count;
+
+            Console.WriteLine(average*0.9 + " " + average*1.1);
+            
+            return average;
         }
     }
 }

@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace TestTaskHHru.Parser.HeadHunter
 {
-    class HHParser : IParser<Vacancy[]>
+    class HHParser : IParser<List<Vacancy>>
     {
 
-        public Vacancy[] Parse(IHtmlDocument document)
+        public List<Vacancy> Parse(IHtmlDocument document)
         {
             var list = new List<Vacancy>();
             string title = "";
             string name = "";
             string description = "";
             string date = "";
-            string price = "";
+            string salary = "";
 
 
             // Search for vacancies
@@ -27,12 +27,12 @@ namespace TestTaskHHru.Parser.HeadHunter
                 name = ExtraxtText("a", "bloko-link bloko-link_secondary", item);
                 description = ExtraxtText("div", "g-user-content", item);
                 date = ExtraxtText("span", "vacancy-serp-item__publication-date", item);
-                price = ExtraxtText("div", "vacancy-serp-item__compensation", item);
+                salary = ExtraxtText("div", "vacancy-serp-item__compensation", item);
 
-                list.Add(new Vacancy(title, name, description, date, price));
+                list.Add(new Vacancy(title, name, description, date, salary));
             }
 
-            return list.ToArray();
+            return list;
         }
 
         private string ExtraxtText(string className, string contains, AngleSharp.Dom.IElement source)

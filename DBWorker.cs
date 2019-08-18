@@ -55,12 +55,12 @@ namespace TestTaskHHru
                 conn.Open();
                 sql = @"select * from vc_insert(:Title, :Name, :Description, :Date, :Price_min, :Price_max)";
                 cmd = new NpgsqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("Title", vacancy.getVacancyTitle());
-                cmd.Parameters.AddWithValue("Name", vacancy.getVacancyName());
-                cmd.Parameters.AddWithValue("Description", vacancy.getVacancyDescription());
-                cmd.Parameters.AddWithValue("Date", vacancy.getVacancyPublicationDate());
-                cmd.Parameters.AddWithValue("Price_min", vacancy.getVacansyPriceMin());
-                cmd.Parameters.AddWithValue("Price_max", vacancy.getVacansyPriceMax());
+                cmd.Parameters.AddWithValue("Title", vacancy.VacancyTitle);
+                cmd.Parameters.AddWithValue("Name", vacancy.VacancyName);
+                cmd.Parameters.AddWithValue("Description", vacancy.VacancyDescription);
+                cmd.Parameters.AddWithValue("Date", vacancy.VacancyPublicationDate);
+                cmd.Parameters.AddWithValue("Price_min", vacancy.VacansySalaryMin);
+                cmd.Parameters.AddWithValue("Price_max", vacancy.VacansySalaryMax);
                 result = (int)cmd.ExecuteScalar();
                 if (result == 0)
                 {

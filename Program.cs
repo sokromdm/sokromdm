@@ -6,6 +6,13 @@ using System.Windows.Forms;
 using TestTaskHHru.Parser;
 using TestTaskHHru.Parser.HeadHunter;
 
+/*
+TODO:
+1) переименовать Price на Salary в программе и в бд
+2) убрать функции из БД и заменить на простые выражения SQL 
+3) заменить простой insert на массовый
+4) отметать вакансии без з/п на стадии парсинга
+*/
 namespace TestTaskHHru
 {
     class Program
