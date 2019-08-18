@@ -38,7 +38,7 @@ namespace TestTaskHHru
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Select error: " + ex.Message + " " + ex.Data);
+                MessageBox.Show("Select error: " + ex.Message);
                 return null;
             }
             finally

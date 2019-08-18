@@ -89,6 +89,7 @@ namespace TestTaskHHru
         private void ButtonAbort_Click(object sender, EventArgs e)
         {
             parser.Abort();
+            ListTitels.Items.Add("Parsing stopped.");
         }
 
         private int CalculateAverageSalary(List<Vacancy> list)
@@ -108,7 +109,8 @@ namespace TestTaskHHru
                     count++;
                 }
             }
-            average = average / count;
+            if (count>0) average = average / count;
+            else ListTitels.Items.Add("No vacancies found.");
             return average;
         }
     }

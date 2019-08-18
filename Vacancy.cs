@@ -23,7 +23,7 @@ namespace TestTaskHHru
             this.VacancyName = vacancyName;
             this.VacancyDescription = vacancyDescription;
             this.VacancyPublicationDate = vacancyPublicationDate;
-            ProcessPriceString(vacancyPrice);
+            ProcessSalaryString(vacancyPrice);
         }
 
         /*Method sorts string with price information
@@ -32,22 +32,19 @@ namespace TestTaskHHru
         min price (от 12 000 руб.); 
         max price (до 20 000 руб.); 
         range (10 000-12 000 руб.);*/
-        private void ProcessPriceString(string vacancyPrice)
+        private void ProcessSalaryString(string vacancyPrice)
         {
             Regex regex = new Regex(@"( руб.)");
-            Regex cleanceRegex = new Regex(@" ");
             if (vacancyPrice != null)
             {
                 MatchCollection matches = regex.Matches(vacancyPrice);
-
                 if (regex.IsMatch(vacancyPrice))
                 {
-                    int count = 0;
-
                     //Getting rid of symbol " " between numbers
+                    Regex cleanceRegex = new Regex(@" ");
                     var sortedString = cleanceRegex.Replace(vacancyPrice, "");
 
-                    //Getting rid of "руб."
+                    //Getting rid of " руб."
                     sortedString = regex.Replace(sortedString, "");
 
                     // range 
@@ -74,7 +71,6 @@ namespace TestTaskHHru
                         }
                     }
 
-
                     //max
                     regex = new Regex(@"(?:до )(?<max1>\d*)");
                     matches = regex.Matches(sortedString);
@@ -92,22 +88,6 @@ namespace TestTaskHHru
             {
                 VacansySalaryMin = VacansySalaryMax = 0;
             }
-        }
-
-        // Returns a list of all vacancy info
-        public List<string> VacansyStrings()
-        {
-            return (new List<string>
-            {
-                VacancyTitle,
-                VacancyName,
-                VacancyDescription,
-                VacancyPublicationDate,
-                VacansySalaryMin.ToString(),
-                VacansySalaryMax.ToString()
-            });
-        } 
-
-        
+        }   
     }
 }
