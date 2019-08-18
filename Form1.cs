@@ -37,7 +37,10 @@ namespace TestTaskHHru
 
         private void Parser_OnCompleted(object obj)
         {
+            ListTitels.Items.Add("Parsing complete!");
             averageSalary = CalculateAverageSalary(vacancies);
+            ListTitels.Items.Add("Average salary from collected data: " + averageSalary + " (" + averageSalary*0.9 + " - " + averageSalary*1.1 + ")");
+            ListTitels.Items.Add("Adding vacancies into Database...");
             foreach (Vacancy v in vacancies)
             {
                 if (!(v.VacansySalaryMin==0 && v.VacansySalaryMax==0))
@@ -47,16 +50,14 @@ namespace TestTaskHHru
                         if ((v.VacansySalaryMin < averageSalary * 1.1) && (v.VacansySalaryMin > averageSalary * 0.9))
                         {
                             dataBase.Insert(v);
-                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
-                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        }
                     }
                     else if ((v.VacansySalaryMin == 0) && !(v.VacansySalaryMax == 0))
                     {
                         if ((v.VacansySalaryMax < averageSalary * 1.1) && (v.VacansySalaryMax > averageSalary * 0.9))
                         {
                             dataBase.Insert(v);
-                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
-                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        }
                     }
                     else if (!(v.VacansySalaryMin == 0) && !(v.VacansySalaryMax == 0))
                     {
@@ -66,18 +67,20 @@ namespace TestTaskHHru
                             ((v.VacansySalaryMin < averageSalary * 0.9) && (v.VacansySalaryMax > averageSalary * 1.1)))
                         {
                             dataBase.Insert(v);
-                            Console.WriteLine(v.VacansySalaryMin + " " + v.VacansySalaryMax);
-                        } else ListTitels.Items.Add(v.VacansySalaryMin + " " + v.VacansySalaryMax);
+                        }
                     }
                 }
             }
+            ListTitels.Items.Add("Vacancies was successfully transfered into the Database.");
+            ListTitels.Items.Add("Loading table into the viever...");
             dgvData.DataSource = null;
             dgvData.DataSource = dataBase.Select();
-            MessageBox.Show("Done!");
+            ListTitels.Items.Add("Done!");
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
+            ListTitels.Items.Add("Attempt to parse from page " + NumberStart.Value + " to " + NumberEnd.Value + "...");
             parser.Settings = new HHSettings((int)NumberStart.Value, (int)NumberEnd.Value);
             parser.Start();
             dataBase.DeleteAll();
