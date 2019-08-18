@@ -28,19 +28,15 @@ namespace TestTaskHHru
 
         private void Parser_OnNewData(object arg1, List<Vacancy> arg2)
         {
-            
             foreach (var item in arg2)
             {
                 vacancies.Add(item);
-                //dataBase.Insert(item);
-                //ListTitels.Items.Add(item.VacancyTitle);
             }
 
         }
 
         private void Parser_OnCompleted(object obj)
         {
-            //MessageBox.Show("All works done!");
             averageSalary = CalculateAverageSalary(vacancies);
             foreach (Vacancy v in vacancies)
             {
@@ -77,6 +73,7 @@ namespace TestTaskHHru
             }
             dgvData.DataSource = null;
             dgvData.DataSource = dataBase.Select();
+            MessageBox.Show("Done!");
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
@@ -109,9 +106,6 @@ namespace TestTaskHHru
                 }
             }
             average = average / count;
-
-            Console.WriteLine(average*0.9 + " " + average*1.1);
-            
             return average;
         }
     }
