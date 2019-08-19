@@ -3,10 +3,10 @@
 This program reads vacancies from https://yaroslavl.hh.ru/catalog/Prodazhi/ and adds to the database those whose salaries do not differ by more than 10% from the average. 
 
 ##### Usage
-In the application window, select from which page you want to collect vacancies and click "Start". To abort the operation, click "Abort".
+In the application window, configure the range of pages from which you want to collect vacancies and click "Start". To stop the operation, click "Abort".
 
 ##### Files
-#
+
 File name       | Contains
 ----------------|----------------------
 DBdump.sql      | Dump file for Database in PostreSQL
